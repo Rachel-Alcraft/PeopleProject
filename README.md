@@ -15,10 +15,11 @@ ID,Name,Importance,PersonDaysNeeded,DaysAvailable,DaysToExpiry
 Name Preferences Time
 Rachel,1 2 3 4,100
 ```
-
 - The person preferences start at those they most want to do, but include all those they COULD POSSIBLY do even if they'd rather not.
 - The seperation of project-importance and person-preference removes guilt and bias from the planning stage.
 - If nobody can do a project then it is not scheduled
+### Output
+- A single csv file with a line for every person-project allocation
 
 ### Installation
 - To test, just clone the repo and run the allocator.py script
