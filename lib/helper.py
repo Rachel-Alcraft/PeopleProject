@@ -18,9 +18,23 @@ def createProjectList(projects_df):
         id = projects_df["Id"][i]
         nm = projects_df["Name"][i]
         imp = projects_df["Importance"][i]
-        p_d = projects_df["PersonDaysNeeded"][i]
-        days = projects_df["DaysAvailable"][i]
+        p_d = projects_df["PersonDaysNeeded"][i]        
         exp = projects_df["DaysToExpiry"][i]
-        pjct = lib.Project.Project(id,nm,imp,p_d,days,exp)
+        pjct = lib.Project.Project(id,nm,imp,p_d,exp)
         projects[int(id)]=pjct
     return projects
+
+def runAllocator(num_projects,people,projects,max_importance = 0):
+    finished = False
+    while not finished:
+        finished = True #only set it to false if any change is made
+        for i in range(num_projects):
+            for peos in people:
+                if not peos.isAllocated():
+                    if len(peos.preferences) > i:
+                        next_preferred_project = projects[int(peos.preferences[i])]
+                        if next_preferred_project.importance >= max_importance and not next_preferred_project.isAllocated():
+                            alloc = lib.Allocation.Allocation(next_preferred_project,peos)
+                            next_preferred_project.addAllocation(alloc)
+                            deadlock = finished
+        

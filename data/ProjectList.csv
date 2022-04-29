@@ -1,7 +1,8 @@
-Id,Name,Importance,PersonDaysNeeded,DaysAvailable,DaysToExpiry
-1,Allocator,10,1,28,5
-2,Project1,10,56,28,28
-3,Project2,8,12,28,2
-4,Project3,9,56,28,28
-5,Project4,3,2,28,28
-6,Project5,10,2,28,28
+Id,Name,Importance,PersonDaysNeeded,DaysToExpiry
+1,Allocator,10,1,5
+2,Project1,10,56,28
+3,Project2,8,125,2
+4,Project3,9,56,28
+5,Project4,3,200,28
+6,Project5,10,2,28
+7,Project6,7,500,1000

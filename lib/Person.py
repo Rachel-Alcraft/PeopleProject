@@ -5,8 +5,14 @@ class Person:
         self.name = name
         self.preferences = preferences
         self.time = time
-        self.timeLeft = time
-        self.projects = []
+        self.time_left = time
+        self.allocs = []
+
+    def addAllocation(self,alloc):
+        self.allocs.appebd(alloc)
+
+
+
 
     def isAllocated(self):
-        return self.timeLeft  == 0
+        return self.time_left  == 0
