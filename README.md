@@ -1,9 +1,9 @@
 RSA 29/4/22
 ## People To Projects Allocator
-####This script attempts to blend people's preferences and project priority to perform automatic allocation.
-####There is an inevitable element of randomness, especially if everything is of equal priority
+#### This script attempts to blend people's preferences and project priority to perform automatic allocation.
+#### There is an inevitable element of randomness, especially if everything is of equal priority
 
-###It takes 2 csv files:
+### It takes 2 csv files:
 1) ProjectList.csv 
 ```
 ID,Name,Importance,PersonDaysNeeded,DaysAvailable,DaysToExpiry
