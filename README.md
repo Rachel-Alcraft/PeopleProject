@@ -21,5 +21,5 @@ Rachel,1 2 3 4,100
 - If nobody can do a project then it is not scheduled
 
 ### Installation
-##### To test, just clone the repo and run the allocator.py script
-##### For real allocation, modify the 2 csv files in the data directory
+- To test, just clone the repo and run the allocator.py script
+- For real allocation, modify the 2 csv files in the data directory
