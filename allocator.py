@@ -21,6 +21,7 @@ Rachel,1 2 3 4,100
 """
 ################################# GLOBALS ##############################
 days_in_cycle = 28
+randomise = True
 #######################################################################
 import lib.Person
 import lib.Project
@@ -34,8 +35,9 @@ people_df = pd.read_csv("data/PeopleList.csv")
 projects_df = pd.read_csv("data/ProjectList.csv")
 
 # randomly shuffle the order of the people in the list and the order of the projects
-# people_df = people_df.sample(frac=1).reset_index(drop=True)
-# projects_df = projects_df.sample(frac=1).reset_index(drop=True)
+if randomise:
+    people_df = people_df.sample(frac=1).reset_index(drop=True)
+    projects_df = projects_df.sample(frac=1).reset_index(drop=True)
 
 people = hlp.createPeopleList(people_df)
 projects = hlp.createProjectList(projects_df)
