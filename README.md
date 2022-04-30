@@ -24,6 +24,13 @@ Rachel,1 2 3 4,100
 - If nobody can do a project then it is not scheduled
 ### Output
 - A single csv file with a line for every person-project allocation
+```
+Project,Importance,Needed,Allocated,Unallocated,DaysToExpiry,Reason,Person,Time,PersonLeft
+Allocator,10,1,1,0,5,,RSA,1,0
+Project1,10,56,28,28,28,,RSA,28,0
+Project2,8,125,62,1,2,,RSA,62,0
+Project2,8,125,62,1,2,,TJJ,62,0
+```
 
 ### Installation
 - To test, just clone the repo and run the allocator.py script
