@@ -34,15 +34,14 @@ people_df = pd.read_csv("data/PeopleList.csv")
 projects_df = pd.read_csv("data/ProjectList.csv")
 
 # randomly shuffle the order of the people in the list and the order of the projects
-#people_df = people_df.sample(frac=1).reset_index(drop=True)
-#projects_df = projects_df.sample(frac=1).reset_index(drop=True)
+# people_df = people_df.sample(frac=1).reset_index(drop=True)
+# projects_df = projects_df.sample(frac=1).reset_index(drop=True)
 
 people = hlp.createPeopleList(people_df)
 projects = hlp.createProjectList(projects_df)
 num_projects = len(projects.items())
 
-## - first pass is to eliminate anything that cannot be allocated
-### RULE) Nobody available
+########### RULE) Nobody available  #########################
 print(" ### Running rule: Nobody available ###")
 for person in people:
     for i in range(len(person.preferences)):
@@ -54,11 +53,12 @@ for id,pjct in projects.items():
     if len(pjct.people.items()) == 0:
         pjct.addEmptyAllocation(lib.Allocation.EmptyAllocation("Nobody"))
 
-#### Allocator changes the time left for all the people and project objects by reference
-### we optionally choose the importance that we can try to allocate each time
-### (if it is 0 straight away someone could immediately get their favourite project even if it is not very important)
-### Also with a preference not to have only 1 person on a project we can try a maximum fraction of the project, but then all of it if ncessary
+# Allocator changes the time left for all the people and project objects by reference
+# we optionally choose the importance that we can try to allocate each time
+# (if it is 0 straight away someone could immediately get their favourite project even if it is not very important)
+# Also with a preference not to have only 1 person on a project we can try a maximum fraction of the project, but then all of it if ncessary
 
+########### RULE) Important projects expiring soon  #########################
 allocation_rules = []#min_importance,max_fraction,expiry
 allocation_rules.append([10,0.5,days_in_cycle]) 
 allocation_rules.append([10,1,days_in_cycle]) 
@@ -71,9 +71,12 @@ for min_imp,max_frac,exp in allocation_rules:
 
 ## if we have failed to allocate we can take them out and consider them undo-able
 ## This frees up people to be allocated to realistic projects
+
+########### RULE) Cancel projects that can't be completed  #########################
 print(" ### Cancelling unallocated projects near expiry ###")
 hlp.cancelUncompletedProjects(projects,days_in_cycle)
 
+########### RULE) Projects on priority of importance with a first attempt to share  #########################
 allocation_rules = []#min_importance,max_fraction,expiry
 allocation_rules.append([8,0.5,0]) 
 allocation_rules.append([8,1,0]) 
@@ -87,13 +90,11 @@ for min_imp,max_frac,exp in allocation_rules:
     hlp.runAllocator(num_projects,people,projects,min_importance=min_imp,max_fraction=max_frac,expiry=exp)
         
 ## - Finally print out the allocations
+print(" ### Export dataframe results ###")
 projallocs = []
 for id,pjct in projects.items():
     projallocs.append([pjct,pjct.getAllocations()])
-
-# static function to print them out
-print(" ### Export dataframe results ###")
-pjct.printAllocations(projallocs)
+pjct.printAllocations(projallocs)# static function to print them out
 
 
 
