@@ -3,7 +3,8 @@ RSA 29/4/22
 
 ##### This script attempts to blend people's preferences and project priority to perform automatic allocation.
 - There is an inevitable element of randomness, especially if everything is of equal priority
-- There is a built in preference for sharing projects if they are longer than 10 days (arbitrary)
+- Projects expiring soon are prioritised, but cancelled if they can't be allocated
+- There is a preference for sharing projects if they are longer than 10 days (arbitrary)
 - It will first try to allocate important preferred projects to at least 2 people, but then will try just 1 person for the preferred important projects 
 - - (These rules can be changed just by shuffling the order around)
 
@@ -20,7 +21,7 @@ Name Preferences Time
 Rachel,1 2 3 4,100
 ```
 - The person preferences start at those they most want to do, but include all those they COULD POSSIBLY do even if they'd rather not.
-- The seperation of project-importance and person-preference removes guilt and bias from the planning stage.
+- The separation of project-importance and person-preference removes guilt and bias from the planning stage.
 - If nobody can do a project then it is not scheduled
 ### Output
 - A single csv file with a line for every person-project allocation

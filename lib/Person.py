@@ -5,11 +5,12 @@ class Person:
         self.name = name
         self.preferences = preferences
         self.time = time
-        self.time_left = time
-        self.allocs = []
-
-    def addAllocation(self,alloc):
-        self.allocs.appebd(alloc)
-
+        self.time_still_left = time        
+    
     def isAllocated(self):
-        return self.time_left  == 0
+        return self.time_still_left  == 0
+
+    def changeTimeLeft(self,tm):
+        self.time_still_left += tm
+        if self.time_still_left < 0:
+            assert("Can't do negative work")

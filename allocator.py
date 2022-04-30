@@ -20,7 +20,7 @@ Rachel,1 2 3 4,100
 
 """
 ################################# GLOBALS ##############################
-people_first = True #otherwise it prioritises projects                                    
+days_in_cycle = 28
 #######################################################################
 import lib.Person
 import lib.Project
@@ -34,8 +34,8 @@ people_df = pd.read_csv("data/PeopleList.csv")
 projects_df = pd.read_csv("data/ProjectList.csv")
 
 # randomly shuffle the order of the people in the list and the order of the projects
-people_df = people_df.sample(frac=1).reset_index(drop=True)
-projects_df = projects_df.sample(frac=1).reset_index(drop=True)
+#people_df = people_df.sample(frac=1).reset_index(drop=True)
+#projects_df = projects_df.sample(frac=1).reset_index(drop=True)
 
 people = hlp.createPeopleList(people_df)
 projects = hlp.createProjectList(projects_df)
@@ -58,15 +58,27 @@ for id,pjct in projects.items():
 ### we optionally choose the importance that we can try to allocate each time
 ### (if it is 0 straight away someone could immediately get their favourite project even if it is not very important)
 ### Also with a preference not to have only 1 person on a project we can try a maximum fraction of the project, but then all of it if ncessary
-print(" ### Running allocation: 7-10 ###")
-hlp.runAllocator(num_projects,people,projects,max_importance=7,max_fraction=0.5)
-hlp.runAllocator(num_projects,people,projects,max_importance=7,max_fraction=1)
-print(" ### Running allocation: 4-6 ###")
-hlp.runAllocator(num_projects,people,projects,max_importance=4,max_fraction=0.5)
-hlp.runAllocator(num_projects,people,projects,max_importance=4,max_fraction=1)
-print(" ### Running allocation: 0-3 ###")
-hlp.runAllocator(num_projects,people,projects,max_importance=0,max_fraction=0.5)
-hlp.runAllocator(num_projects,people,projects,max_importance=0,max_fraction=1)
+print(" ### Running allocation on important projects that expire soon 10 ###")
+hlp.runAllocator(num_projects,people,projects,min_importance=10,max_fraction=0.5, expiry=days_in_cycle)
+hlp.runAllocator(num_projects,people,projects,min_importance=10,max_fraction=1, expiry=days_in_cycle)
+print(" ### Running allocation on important projects that expire soon 5-9 ###")
+hlp.runAllocator(num_projects,people,projects,min_importance=5,max_fraction=0.5, expiry=days_in_cycle)
+hlp.runAllocator(num_projects,people,projects,min_importance=5,max_fraction=1, expiry=days_in_cycle)
+
+## if we have failed to allocate we can take them out and consider them undo-able
+## This frees up people to be allocated to realistic projects
+print(" ### Cancelling unallocated projects near expiry ###")
+hlp.cancelUncompletedProjects(projects,days_in_cycle)
+
+print(" ### Running allocation: 8-10 ###")
+hlp.runAllocator(num_projects,people,projects,min_importance=8,max_fraction=0.5)
+hlp.runAllocator(num_projects,people,projects,min_importance=8,max_fraction=1)
+print(" ### Running allocation: 5-7 ###")
+hlp.runAllocator(num_projects,people,projects,min_importance=5,max_fraction=0.5)
+hlp.runAllocator(num_projects,people,projects,min_importance=5,max_fraction=1)
+print(" ### Running allocation: 0-4 ###")
+hlp.runAllocator(num_projects,people,projects,min_importance=0,max_fraction=0.5)
+hlp.runAllocator(num_projects,people,projects,min_importance=0,max_fraction=1)
         
 ## - Finally print out the allocations
 projallocs = []

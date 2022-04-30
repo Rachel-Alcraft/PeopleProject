@@ -24,7 +24,7 @@ def createProjectList(projects_df):
         projects[int(id)]=pjct
     return projects
 ##########################################################################################
-def runAllocator(num_projects,people,projects,max_importance = 0,max_fraction=1):
+def runAllocator(num_projects,people,projects,min_importance = 0,max_fraction=1, expiry=0):
     finished = False
     while not finished:
         finished = True #only set it to false if any change is made
@@ -33,8 +33,22 @@ def runAllocator(num_projects,people,projects,max_importance = 0,max_fraction=1)
                 if not peos.isAllocated():
                     if len(peos.preferences) > i:
                         next_preferred_project = projects[int(peos.preferences[i])]
-                        if next_preferred_project.importance >= max_importance and not next_preferred_project.isAllocated():
-                            alloc = lib.Allocation.Allocation(next_preferred_project,peos,max_fraction)
-                            next_preferred_project.addAllocation(alloc)
-                            finished = False
+                        if next_preferred_project.importance >= min_importance and not next_preferred_project.isAllocated():
+                            if expiry == 0 or next_preferred_project.daysToExpiry <= expiry: 
+                                alloc = lib.Allocation.Allocation(next_preferred_project,peos,max_fraction)
+                                next_preferred_project.addAllocation(alloc)
+                                finished = False
 ##########################################################################################
+def cancelUncompletedProjects(projects, expiry):
+    for id,pjc in projects.items():
+        if pjc.daysToExpiry <= expiry:
+            if not pjc.isAllocated():
+                for allo in pjc.allocations:
+                    tm = allo.time                    
+                    psn = allo.person                
+                    psn.changeTimeLeft(tm)
+                pjc.allocations = []
+                pjc.addEmptyAllocation(lib.Allocation.EmptyAllocation("No Time"))
+##########################################################################################
+
+
