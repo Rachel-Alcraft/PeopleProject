@@ -91,7 +91,7 @@ projallocs = []
 for id,pjct in projects.items():
     projallocs.append([pjct,pjct.getAllocations()])
 
-# We have a static function to print them out
+# static function to print them out
 print(" ### Export dataframe results ###")
 pjct.printAllocations(projallocs)
 
