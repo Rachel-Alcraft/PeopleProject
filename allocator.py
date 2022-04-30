@@ -55,12 +55,18 @@ for id,pjct in projects.items():
         pjct.addEmptyAllocation(lib.Allocation.EmptyAllocation("Nobody"))
 
 #### Allocator) changes the time left for all the people and project objects by reference
+### we optionally choose the importance that we can try to allocate each time
+### (if it is 0 straight away someone could immediately get their favourite project even if it is not very important)
+### Also with a preference not to have only 1 person on a project we can try a maximum fraction of the project, but then all of it if ncessary
 print(" ### Running allocation: 7-10 ###")
-hlp.runAllocator(num_projects,people,projects,max_importance=7)
+hlp.runAllocator(num_projects,people,projects,max_importance=7,max_fraction=0.5)
+hlp.runAllocator(num_projects,people,projects,max_importance=7,max_fraction=1)
 print(" ### Running allocation: 4-6 ###")
-hlp.runAllocator(num_projects,people,projects,max_importance=4)
+hlp.runAllocator(num_projects,people,projects,max_importance=4,max_fraction=0.5)
+hlp.runAllocator(num_projects,people,projects,max_importance=4,max_fraction=1)
 print(" ### Running allocation: 0-3 ###")
-hlp.runAllocator(num_projects,people,projects,max_importance=0)
+hlp.runAllocator(num_projects,people,projects,max_importance=0,max_fraction=0.5)
+hlp.runAllocator(num_projects,people,projects,max_importance=0,max_fraction=1)
         
 ## - Finally print out the allocations
 projallocs = []
@@ -68,6 +74,7 @@ for id,pjct in projects.items():
     projallocs.append([pjct,pjct.getAllocations()])
 
 # We have a static function to print them out
+print(" ### Export dataframe results ###")
 pjct.printAllocations(projallocs)
 
 
