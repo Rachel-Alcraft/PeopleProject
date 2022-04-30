@@ -39,9 +39,9 @@ def runAllocator(num_projects,people,projects,min_importance = 0,max_fraction=1,
                                 next_preferred_project.addAllocation(alloc)
                                 finished = False
 ##########################################################################################
-def cancelUncompletedProjects(projects, expiry):
+def cancelUncompletedProjects(projects, expiry,importance):
     for id,pjc in projects.items():
-        if pjc.daysToExpiry <= expiry:
+        if pjc.daysToExpiry <= expiry and pjc.importance >= importance:
             if not pjc.isAllocated():
                 for allo in pjc.allocations:
                     tm = allo.time                    

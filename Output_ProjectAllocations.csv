@@ -7,8 +7,8 @@ Project3,9,56,29,0,56,,TJJ,29,0
 Project3,9,56,27,0,56,,RSA,27,0
 Project4,3,200,101,99,56,,ABC,101,0
 Project5,10,2,0,2,56,Nobody,,,
-Project6,1,500,39,379,1000,,ABC,39,0
-Project6,1,500,40,379,1000,,RSA,40,0
-Project6,1,500,42,379,1000,,TJJ,42,0
+Project6,1,500,39,374,1000,,ABC,39,0
+Project6,1,500,42,374,1000,,TJJ,42,0
+Project6,1,500,45,374,1000,,RSA,45,0
 Project7,1,25,0,25,12,Nobody,,,
-Project8,0,5,5,0,20,,RSA,5,0
+Project8,0,5,0,5,20,Not scheduled,,,

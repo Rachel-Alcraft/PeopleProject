@@ -66,8 +66,6 @@ allocation_rules.append([10,0.5,days_in_cycle])
 allocation_rules.append([10,1,days_in_cycle]) 
 allocation_rules.append([5,0.5,days_in_cycle])
 allocation_rules.append([5,1,days_in_cycle]) 
-allocation_rules.append([0,0.5,days_in_cycle])
-allocation_rules.append([0,1,days_in_cycle]) 
 
 for min_imp,max_frac,exp in allocation_rules:
     print(" ### Running allocation on: min_importance=",min_imp," shared fraction=",max_frac," expiry=",exp )
@@ -78,7 +76,7 @@ for min_imp,max_frac,exp in allocation_rules:
 
 ########### RULE) Cancel projects that can't be completed  #########################
 print(" ### Cancelling unallocated projects near expiry ###")
-hlp.cancelUncompletedProjects(projects,days_in_cycle)
+hlp.cancelUncompletedProjects(projects,days_in_cycle,5)
 
 ########### RULE) Projects on priority of importance with a first attempt to share  #########################
 allocation_rules = []#min_importance,max_fraction,expiry
