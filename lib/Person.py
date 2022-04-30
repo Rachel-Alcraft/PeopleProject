@@ -11,8 +11,5 @@ class Person:
     def addAllocation(self,alloc):
         self.allocs.appebd(alloc)
 
-
-
-
     def isAllocated(self):
         return self.time_left  == 0

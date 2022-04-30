@@ -66,10 +66,7 @@ class Project:
                         dic_allocs["Person"].append(allo.person.name)
                         dic_allocs["Time"].append(allo.time)                   
                         dic_allocs["PersonLeft"].append(allo.person.time_left)                     
-                        
-                        
-                        
-        
+                                                                                
         projalloc_df = pd.DataFrame.from_dict(dic_allocs)
         projalloc_df.sort_values(by=['Project'], inplace=True)
         pd.DataFrame.to_csv(projalloc_df,"Output_ProjectAllocations.csv",index=False)
