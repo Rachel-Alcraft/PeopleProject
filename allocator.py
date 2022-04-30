@@ -87,12 +87,14 @@ allocation_rules.append([5,1,0])
 allocation_rules.append([0,0.5,0])
 allocation_rules.append([0,1,0])
 
+## Do it twice, between times cancel projects that will not complete so time can be reallocated
 for min_imp,max_frac,exp in allocation_rules:
     print(" ### Running allocation on: min_importance=",min_imp," shared fraction=",max_frac," expiry=",exp )
     hlp.runAllocator(num_projects,people,projects,min_importance=min_imp,max_fraction=max_frac,expiry=exp)
-## Having done this once, we want to cancel projects that will not complete and do it again
+########### RULE) Cancel projects that can't be completed  #########################
 print(" ### Cancelling unallocated projects near expiry ###")
 hlp.cancelUncompletedProjects(projects,days_in_cycle,0)        
+########### RULE) Projects on priority of importance with a first attempt to share  #########################
 for min_imp,max_frac,exp in allocation_rules:
     print(" ### Running allocation on: min_importance=",min_imp," shared fraction=",max_frac," expiry=",exp )
     hlp.runAllocator(num_projects,people,projects,min_importance=min_imp,max_fraction=max_frac,expiry=exp)
