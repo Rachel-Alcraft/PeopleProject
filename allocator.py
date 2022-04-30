@@ -90,7 +90,13 @@ allocation_rules.append([0,1,0])
 for min_imp,max_frac,exp in allocation_rules:
     print(" ### Running allocation on: min_importance=",min_imp," shared fraction=",max_frac," expiry=",exp )
     hlp.runAllocator(num_projects,people,projects,min_importance=min_imp,max_fraction=max_frac,expiry=exp)
-        
+## Having done this once, we want to cancel projects that will not complete and do it again
+print(" ### Cancelling unallocated projects near expiry ###")
+hlp.cancelUncompletedProjects(projects,days_in_cycle,0)        
+for min_imp,max_frac,exp in allocation_rules:
+    print(" ### Running allocation on: min_importance=",min_imp," shared fraction=",max_frac," expiry=",exp )
+    hlp.runAllocator(num_projects,people,projects,min_importance=min_imp,max_fraction=max_frac,expiry=exp)
+
 ## - Finally print out the allocations
 print(" ### Export dataframe results ###")
 projallocs = []
