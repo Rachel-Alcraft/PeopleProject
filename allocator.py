@@ -59,11 +59,11 @@ for id,pjct in projects.items():
 ### (if it is 0 straight away someone could immediately get their favourite project even if it is not very important)
 ### Also with a preference not to have only 1 person on a project we can try a maximum fraction of the project, but then all of it if ncessary
 
-allocation_rules = []
-allocation_rules.append([10,0.5,days_in_cycle]) #min_importance,max_fraction,expiry
-allocation_rules.append([10,1,days_in_cycle]) #min_importance,max_fraction,expiry
-allocation_rules.append([5,0.5,days_in_cycle]) #min_importance,max_fraction,expiry
-allocation_rules.append([5,1,days_in_cycle]) #min_importance,max_fraction,expiry
+allocation_rules = []#min_importance,max_fraction,expiry
+allocation_rules.append([10,0.5,days_in_cycle]) 
+allocation_rules.append([10,1,days_in_cycle]) 
+allocation_rules.append([5,0.5,days_in_cycle])
+allocation_rules.append([5,1,days_in_cycle]) 
 
 for min_imp,max_frac,exp in allocation_rules:
     print(" ### Running allocation on: min_importance=",min_imp," shared fraction=",max_frac," expiry=",exp )
@@ -74,13 +74,13 @@ for min_imp,max_frac,exp in allocation_rules:
 print(" ### Cancelling unallocated projects near expiry ###")
 hlp.cancelUncompletedProjects(projects,days_in_cycle)
 
-allocation_rules = []
-allocation_rules.append([8,0.5,0]) #min_importance,max_fraction,expiry
-allocation_rules.append([8,1,0]) #min_importance,max_fraction,expiry
-allocation_rules.append([5,0.5,0]) #min_importance,max_fraction,expiry
-allocation_rules.append([5,1,0]) #min_importance,max_fraction,expiry
-allocation_rules.append([0,0.5,0]) #min_importance,max_fraction,expiry
-allocation_rules.append([0,1,0]) #min_importance,max_fraction,expiry
+allocation_rules = []#min_importance,max_fraction,expiry
+allocation_rules.append([8,0.5,0]) 
+allocation_rules.append([8,1,0]) 
+allocation_rules.append([5,0.5,0])
+allocation_rules.append([5,1,0]) 
+allocation_rules.append([0,0.5,0])
+allocation_rules.append([0,1,0])
 
 for min_imp,max_frac,exp in allocation_rules:
     print(" ### Running allocation on: min_importance=",min_imp," shared fraction=",max_frac," expiry=",exp )
