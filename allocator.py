@@ -54,31 +54,37 @@ for id,pjct in projects.items():
     if len(pjct.people.items()) == 0:
         pjct.addEmptyAllocation(lib.Allocation.EmptyAllocation("Nobody"))
 
-#### Allocator) changes the time left for all the people and project objects by reference
+#### Allocator changes the time left for all the people and project objects by reference
 ### we optionally choose the importance that we can try to allocate each time
 ### (if it is 0 straight away someone could immediately get their favourite project even if it is not very important)
 ### Also with a preference not to have only 1 person on a project we can try a maximum fraction of the project, but then all of it if ncessary
-print(" ### Running allocation on important projects that expire soon 10 ###")
-hlp.runAllocator(num_projects,people,projects,min_importance=10,max_fraction=0.5, expiry=days_in_cycle)
-hlp.runAllocator(num_projects,people,projects,min_importance=10,max_fraction=1, expiry=days_in_cycle)
-print(" ### Running allocation on important projects that expire soon 5-9 ###")
-hlp.runAllocator(num_projects,people,projects,min_importance=5,max_fraction=0.5, expiry=days_in_cycle)
-hlp.runAllocator(num_projects,people,projects,min_importance=5,max_fraction=1, expiry=days_in_cycle)
+
+allocation_rules = []
+allocation_rules.append([10,0.5,days_in_cycle]) #min_importance,max_fraction,expiry
+allocation_rules.append([10,1,days_in_cycle]) #min_importance,max_fraction,expiry
+allocation_rules.append([5,0.5,days_in_cycle]) #min_importance,max_fraction,expiry
+allocation_rules.append([5,1,days_in_cycle]) #min_importance,max_fraction,expiry
+
+for min_imp,max_frac,exp in allocation_rules:
+    print(" ### Running allocation on: min_importance=",min_imp," shared fraction=",max_frac," expiry=",exp )
+    hlp.runAllocator(num_projects,people,projects,min_importance=min_imp,max_fraction=max_frac,expiry=exp)
 
 ## if we have failed to allocate we can take them out and consider them undo-able
 ## This frees up people to be allocated to realistic projects
 print(" ### Cancelling unallocated projects near expiry ###")
 hlp.cancelUncompletedProjects(projects,days_in_cycle)
 
-print(" ### Running allocation: 8-10 ###")
-hlp.runAllocator(num_projects,people,projects,min_importance=8,max_fraction=0.5)
-hlp.runAllocator(num_projects,people,projects,min_importance=8,max_fraction=1)
-print(" ### Running allocation: 5-7 ###")
-hlp.runAllocator(num_projects,people,projects,min_importance=5,max_fraction=0.5)
-hlp.runAllocator(num_projects,people,projects,min_importance=5,max_fraction=1)
-print(" ### Running allocation: 0-4 ###")
-hlp.runAllocator(num_projects,people,projects,min_importance=0,max_fraction=0.5)
-hlp.runAllocator(num_projects,people,projects,min_importance=0,max_fraction=1)
+allocation_rules = []
+allocation_rules.append([8,0.5,0]) #min_importance,max_fraction,expiry
+allocation_rules.append([8,1,0]) #min_importance,max_fraction,expiry
+allocation_rules.append([5,0.5,0]) #min_importance,max_fraction,expiry
+allocation_rules.append([5,1,0]) #min_importance,max_fraction,expiry
+allocation_rules.append([0,0.5,0]) #min_importance,max_fraction,expiry
+allocation_rules.append([0,1,0]) #min_importance,max_fraction,expiry
+
+for min_imp,max_frac,exp in allocation_rules:
+    print(" ### Running allocation on: min_importance=",min_imp," shared fraction=",max_frac," expiry=",exp )
+    hlp.runAllocator(num_projects,people,projects,min_importance=min_imp,max_fraction=max_frac,expiry=exp)
         
 ## - Finally print out the allocations
 projallocs = []
