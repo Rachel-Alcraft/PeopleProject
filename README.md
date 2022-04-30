@@ -1,13 +1,11 @@
 RSA 29/4/22
 ## People To Projects Allocator
+
 ##### This script attempts to blend people's preferences and project priority to perform automatic allocation.
-##### There is an inevitable element of randomness, especially if everything is of equal priority
-
-##### There is a built in preference for sharing projects if they are longer than 10 days (arbitrary)
-##### It will first try to allocate important preferred projects to at least 2 people, 
-##### but then will try just 1 person for the preferred important projects 
-
-##### (These rules can be changed just by shuffling the order around)
+- There is an inevitable element of randomness, especially if everything is of equal priority
+- There is a built in preference for sharing projects if they are longer than 10 days (arbitrary)
+- It will first try to allocate important preferred projects to at least 2 people, but then will try just 1 person for the preferred important projects 
+- - (These rules can be changed just by shuffling the order around)
 
 ### It takes 2 csv files:
 1) ProjectList.csv 
