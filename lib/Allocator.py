@@ -6,11 +6,12 @@ import lib.Allocation as alo
 import pandas as pd
 
 class Allocator:
-    def __init__(self, people, projects):        
+    def __init__(self, people, projects, days_alone=10):        
         self.people = people
         self.projects = projects
         self.num_projects = len(projects.items())
         self.rules = []
+        self.days_alone = days_alone
         # inventory of the projects people want to do
         for person in self.people:
             for i in range(len(person.preferences)):
@@ -64,7 +65,7 @@ class Allocator:
                             next_preferred_project = self.projects[int(peos.preferences[i])]
                             if next_preferred_project.importance >= min_importance and not next_preferred_project.isAllocated():
                                 if expiry == 0 or next_preferred_project.daysToExpiry <= expiry: 
-                                    alloc = alo.Allocation(next_preferred_project,peos,max_fraction)
+                                    alloc = alo.Allocation(next_preferred_project,peos,self.days_alone,max_fraction)
                                     next_preferred_project.addAllocation(alloc)
                                     finished = False
 

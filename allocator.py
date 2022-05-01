@@ -20,8 +20,9 @@ Rachel,1 2 3 4,100
 
 """
 ################################# GLOBALS ##############################
-days_in_cycle = 28
+days_in_cycle = 28 #how many working days in this scheduling cycle
 randomise = True
+days_alone = 15 #how many days is it ok for someone to work on a project alone?
 #######################################################################
 import lib.Person
 import lib.Project
@@ -42,7 +43,7 @@ if randomise:
 people = hlp.createPeopleList(people_df)
 projects = hlp.createProjectList(projects_df)
 # create the allocator class
-allocr = lib.Allocator.Allocator(people,projects)
+allocr = lib.Allocator.Allocator(people,projects,days_alone=days_alone)
 ########### RULE) Nobody available  #########################
 allocr.addRule("cancel_nobody")
 ########### RULE) Important projects expiring soon  #########################
@@ -53,7 +54,6 @@ allocr.addRule("allocate",min_importance=5,max_fraction=1,expiry=days_in_cycle)
 ########### RULE) Cancel projects that can't be completed  #########################
 allocr.addRule("cancel_uncompleted_expired",min_importance=5,expiry=days_in_cycle)
 ########### RULE) Projects on priority of importance with a first attempt to share  #########################
-allocation_rules = []#min_importance,max_fraction,expiry
 allocr.addRule("allocate",min_importance=8,max_fraction=0.5) 
 allocr.addRule("allocate",min_importance=8,max_fraction=1) 
 allocr.addRule("allocate",min_importance=5,max_fraction=0.5) 

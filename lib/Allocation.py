@@ -1,10 +1,10 @@
 
 class Allocation:
-    def __init__(self, proj,pers,max_fraction=1):        
+    def __init__(self, proj,pers,days_alone,max_fraction):        
         self.project = proj
         self.person = pers
         self.time = 0
-        self.arbitrary_cap_on_sharing_projects = 10
+        self.arbitrary_cap_on_sharing_projects = days_alone
         
         if proj.personDaysNeeded < self.arbitrary_cap_on_sharing_projects:
             can_be_allocated = self.project.daysStillNeeded
