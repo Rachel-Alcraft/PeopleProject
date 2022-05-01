@@ -39,14 +39,14 @@ Project2,8,125,62,1,2,,TJJ,62,0
 def addRule(self,name,min_importance=0,max_fraction=1,expiry=0):        
 ```
 -  Possible rules:
--- "cancel_nobody": There is nobody capable of doing it
--- "cancel_uncompleted_expired": (expiry,min_importance) : The project can't be scheduled in the time frame
--- "not_scheduled": It just hasn't been scheduled
--- "allocate": (min_importance,max_fraction,expiry) The main allocation, allocates on peoples preferences
+- - "cancel_nobody": There is nobody capable of doing it
+- - "cancel_uncompleted_expired": (expiry,min_importance) : The project can't be scheduled in the time frame
+- - "not_scheduled": It just hasn't been scheduled
+- - "allocate": (min_importance,max_fraction,expiry) The main allocation, allocates on peoples preferences
 - The main inputs are
--- min_importance: it will only schedule up to something of the given priority in this scheduling round
--- max_fraction: it will not schedule a single person more than this fraction of the total work, if the work is longer than 2 weeks (TODO optional)
--- expiry: allocates within the time frame, 0 means anything
+- - min_importance: it will only schedule up to something of the given priority in this scheduling round
+- - max_fraction: it will not schedule a single person more than this fraction of the total work, if the work is longer than 2 weeks (TODO optional)
+- - expiry: allocates within the time frame, 0 means anything
 
 ### Installation
 - To test, just clone the repo and run the allocator.py script
