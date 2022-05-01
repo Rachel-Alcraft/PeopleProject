@@ -26,87 +26,55 @@ randomise = True
 import lib.Person
 import lib.Project
 import lib.Allocation
+import lib.Allocator
 import lib.helper as hlp
 
 import pandas as pd
 
-## - First load csv files and create Person and Project objects 
+# load csv files and create Person and Project objects 
 people_df = pd.read_csv("data/PeopleList.csv")
 projects_df = pd.read_csv("data/ProjectList.csv")
-
 # randomly shuffle the order of the people in the list and the order of the projects
 if randomise:
     people_df = people_df.sample(frac=1).reset_index(drop=True)
     projects_df = projects_df.sample(frac=1).reset_index(drop=True)
-
+# create the list and dictionary of people and projects
 people = hlp.createPeopleList(people_df)
 projects = hlp.createProjectList(projects_df)
-num_projects = len(projects.items())
-
+# create the allocator class
+allocr = lib.Allocator.Allocator(people,projects)
 ########### RULE) Nobody available  #########################
-print(" ### Running rule: Nobody available ###")
-for person in people:
-    for i in range(len(person.preferences)):
-        prf = int(person.preferences[i])
-        pjc = projects[prf]
-        pjc.addPersonPreference(i,pjc)
-
-for id,pjct in projects.items():
-    if len(pjct.people.items()) == 0:
-        pjct.addEmptyAllocation(lib.Allocation.EmptyAllocation("Nobody"))
-
-# Allocator changes the time left for all the people and project objects by reference
-# we optionally choose the importance that we can try to allocate each time
-# (if it is 0 straight away someone could immediately get their favourite project even if it is not very important)
-# Also with a preference not to have only 1 person on a project we can try a maximum fraction of the project, but then all of it if ncessary
-
+allocr.addRule("cancel_nobody")
 ########### RULE) Important projects expiring soon  #########################
-allocation_rules = []#min_importance,max_fraction,expiry
-allocation_rules.append([10,0.5,days_in_cycle]) 
-allocation_rules.append([10,1,days_in_cycle]) 
-allocation_rules.append([5,0.5,days_in_cycle])
-allocation_rules.append([5,1,days_in_cycle]) 
-
-for min_imp,max_frac,exp in allocation_rules:
-    print(" ### Running allocation on: min_importance=",min_imp," shared fraction=",max_frac," expiry=",exp )
-    hlp.runAllocator(num_projects,people,projects,min_importance=min_imp,max_fraction=max_frac,expiry=exp)
-
-## if we have failed to allocate we can take them out and consider them undo-able
-## This frees up people to be allocated to realistic projects
-
+allocr.addRule("allocate",min_importance=10,max_fraction=0.5,expiry=days_in_cycle) 
+allocr.addRule("allocate",min_importance=10,max_fraction=1,expiry=days_in_cycle) 
+allocr.addRule("allocate",min_importance=5,max_fraction=0.5,expiry=days_in_cycle)
+allocr.addRule("allocate",min_importance=5,max_fraction=1,expiry=days_in_cycle) 
 ########### RULE) Cancel projects that can't be completed  #########################
-print(" ### Cancelling unallocated projects near expiry ###")
-hlp.cancelUncompletedProjects(projects,days_in_cycle,5)
-
+allocr.addRule("cancel_uncompleted_expired",min_importance=5,expiry=days_in_cycle)
 ########### RULE) Projects on priority of importance with a first attempt to share  #########################
 allocation_rules = []#min_importance,max_fraction,expiry
-allocation_rules.append([8,0.5,0]) 
-allocation_rules.append([8,1,0]) 
-allocation_rules.append([5,0.5,0])
-allocation_rules.append([5,1,0]) 
-allocation_rules.append([0,0.5,0])
-allocation_rules.append([0,1,0])
-
-## Do it twice, between times cancel projects that will not complete so time can be reallocated
-for min_imp,max_frac,exp in allocation_rules:
-    print(" ### Running allocation on: min_importance=",min_imp," shared fraction=",max_frac," expiry=",exp )
-    hlp.runAllocator(num_projects,people,projects,min_importance=min_imp,max_fraction=max_frac,expiry=exp)
+allocr.addRule("allocate",min_importance=8,max_fraction=0.5) 
+allocr.addRule("allocate",min_importance=8,max_fraction=1) 
+allocr.addRule("allocate",min_importance=5,max_fraction=0.5) 
+allocr.addRule("allocate",min_importance=5,max_fraction=1) 
+allocr.addRule("allocate",min_importance=0,max_fraction=0.5) 
+allocr.addRule("allocate",min_importance=0,max_fraction=1) 
 ########### RULE) Cancel projects that can't be completed  #########################
-print(" ### Cancelling unallocated projects near expiry ###")
-hlp.cancelUncompletedProjects(projects,days_in_cycle,0)        
+allocr.addRule("cancel_uncompleted_expired",min_importance=0,expiry=days_in_cycle)
 ########### RULE) Projects on priority of importance with a first attempt to share  #########################
-for min_imp,max_frac,exp in allocation_rules:
-    print(" ### Running allocation on: min_importance=",min_imp," shared fraction=",max_frac," expiry=",exp )
-    hlp.runAllocator(num_projects,people,projects,min_importance=min_imp,max_fraction=max_frac,expiry=exp)
-
-## - Finally print out the allocations
-print(" ### Export dataframe results ###")
-projallocs = []
-for id,pjct in projects.items():
-    projallocs.append([pjct,pjct.getAllocations()])
-pjct.printAllocations(projallocs)# static function to print them out
-
-
-
+allocr.addRule("allocate",min_importance=8,max_fraction=0.5) 
+allocr.addRule("allocate",min_importance=8,max_fraction=1) 
+allocr.addRule("allocate",min_importance=5,max_fraction=0.5) 
+allocr.addRule("allocate",min_importance=5,max_fraction=1) 
+allocr.addRule("allocate",min_importance=0,max_fraction=0.5) 
+allocr.addRule("allocate",min_importance=0,max_fraction=1) 
+########### RULE) It may have not been scheduled at all  #########################
+allocr.addRule("not_scheduled")
+########### RUN THE RULEs  #########################
+allocr.applyRules()
+########### EXPORT THE RESULTS  #########################
+allocr.exportResults("Output_ProjectAllocations.csv")
+#########################################################################
 
 
